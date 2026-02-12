@@ -1,0 +1,65 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[spanish]{babel}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning}
+
+\begin{document}
+
+\begin{center}
+\textbf{\Large Diagrama de Clases – Entidades Geográficas}
+\end{center}
+
+\vspace{1cm}
+
+\begin{tikzpicture}[
+    class/.style={
+        rectangle,
+        draw,
+        rounded corners,
+        minimum width=4cm,
+        minimum height=1cm,
+        align=center
+    },
+    relation/.style={
+        -{Triangle[length=3mm]},
+        thick
+    },
+    aggregation/.style={
+        o-,
+        thick
+    }
+]
+
+% Clases
+\node[class] (entidad) {
+    \textbf{EntidadGeográfica} \\ \hline
+    nombre : String \\
+    código : String
+};
+
+\node[class, below left=2cm and 3cm of entidad] (punto) {
+    \textbf{Punto} \\ \hline
+    x : double \\
+    y : double
+};
+
+\node[class, below=2cm of entidad] (linea) {
+    \textbf{Línea}
+};
+
+\node[class, below right=2cm and 3cm of entidad] (area) {
+    \textbf{Área}
+};
+
+% Herencia
+\draw[relation] (punto.north) -- (entidad.south);
+\draw[relation] (linea.north) -- (entidad.south);
+\draw[relation] (area.north) -- (entidad.south);
+
+% Relaciones
+\draw[aggregation] (linea.west) -- node[above]{2..*} (punto.east);
+\draw[aggregation] (area.east) -- node[above]{3..*} (punto.west);
+
+\end{tikzpicture}
+
+\end{document}
